@@ -1,0 +1,51 @@
+---
+#
+# Variables for CentOS 7.x
+#
+octopussy_packages:
+  - htmldoc
+  - httpd
+  - mod_perl
+  - mod_ssl
+  - mysql
+  - mysql-server
+  - nscd
+  - perl
+  - rrdtool
+  - rsyslog
+  - sudo
+
+octopussy_cpan_packages:
+  - Apache::ASP
+  - App::Info
+  - App::Info::HTTPD 
+  - Cache::Cache 
+  - Crypt::PasswdMD5
+  - SBECK/Date-Manip-5.56.tar.gz
+  - DateTime::Format::Strptime 
+  - DBD::mysql 
+  - DBI 
+  - File::Slurp
+  - JSON 
+  - Linux::Inotify2 
+  - List::MoreUtils 
+  - Locale::Maketext::Lexicon 
+  - Locale::Maketext::Simple 
+  - LWP 
+  - Mail::Sender 
+  - Net::FTP 
+  - Net::LDAP 
+  - Net::SCP 
+  - Net::Telnet 
+  - Net::XMPP
+  - Proc::PID::File 
+  - Proc::ProcessTable 
+  - Readonly 
+  - Regexp::Assemble 
+  - Sys::CPU 
+  - Term::ProgressBar 
+  - Time::Piece
+  - Unix::Syslog 
+  - URI 
+  - version 
+  - XML::Simple
