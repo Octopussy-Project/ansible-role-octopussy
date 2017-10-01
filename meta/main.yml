@@ -1,0 +1,81 @@
+galaxy_info:
+  author: Sebastien Thebert
+  description: Ansible Role for Octopussy
+  company: Octopussy Project (www.octopussy.pm)
+  license: MIT
+  min_ansible_version: 1.2
+
+  #platforms:
+  #- name: Fedora
+  #  versions:
+  #  - all
+  #  - 16
+  #  - 17
+  #  - 18
+  #  - 19
+  #  - 20
+  #  - 21
+  #  - 22
+  #  - 23
+  #  - 24
+  #  - 25
+  #  - 26
+  #- name: Ubuntu
+  #  versions:
+  #  - all
+  #  - artful
+  #  - lucid
+  #  - maverick
+  #  - natty
+  #  - oneiric
+  #  - precise
+  #  - quantal
+  #  - raring
+  #  - saucy
+  #  - trusty
+  #  - utopic
+  #  - vivid
+  #  - wily
+  #  - xenial
+  #  - yakkety
+  #  - zesty
+  #- name: Debian
+  #  versions:
+  #  - all
+  #  - etch
+  #  - jessie
+  #  - lenny
+  #  - sid
+  #  - squeeze
+  #  - stretch
+  #  - wheezy
+  #- name: EL
+  #  versions:
+  #  - all
+  #  - 5
+  #  - 6
+  #  - 7
+  #- name: opensuse
+  #  versions:
+  #  - all
+  #  - 12.1
+  #  - 12.2
+  #  - 12.3
+  #  - 13.1
+  #  - 13.2
+  #- name: SLES
+  #  versions:
+  #  - all
+  #  - 10SP3
+  #  - 10SP4
+  #  - 11
+  #  - 11SP1
+  #  - 11SP2
+  #  - 11SP3
+  #  - 11SP4
+  #  - 12
+  #  - 12SP1
+
+  galaxy_tags: []
+
+dependencies: []
