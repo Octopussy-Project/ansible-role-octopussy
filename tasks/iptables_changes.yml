@@ -1,0 +1,28 @@
+- name: "iptables changes (1/3)"
+  iptables:
+    chain: INPUT
+    ctstate: NEW
+    destination_port: 8888
+    protocol: tcp
+    jump: ACCEPT
+
+- name: "iptables changes (2/3)"
+  iptables:
+    chain: INPUT
+    ctstate: NEW
+    destination_port: 514
+    protocol: tcp
+    jump: ACCEPT
+
+- name: "iptables changes (3/3)"
+  iptables:
+    chain: INPUT
+    destination_port: 514
+    protocol: udp
+    jump: ACCEPT
+
+- name: 'service iptables restart'
+  service:
+    name: iptables
+    state: restarted
+

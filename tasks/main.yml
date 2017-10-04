@@ -1,2 +1,56 @@
 ---
 # tasks file for octopussy
+- name: "Requirements"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution|lower }}_{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution|lower }}.yml"
+  tags: always,octopussy,vars
+
+- name: "Install packages"
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    "{{ octopussy_packages }}"
+  tags: octopussy,packages,yum
+
+  # TODO: don't use curl -> get_url
+- name: "Install CANMinus"
+  shell: curl -L http://cpanmin.us | perl - --sudo App::cpanminus 
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6')
+  tags: octopussy,packages,cpan
+
+- name: "Install CPAN packages"
+  cpanm:
+    name: "{{ item }}"
+  with_items:
+    "{{ octopussy_cpan_packages }}"
+  tags: octopussy,packages,cpan
+
+- name: "Download Octopussy"
+  get_url:
+    url: "{{ octopussy_url_download_tar_gz }}"
+    dest: "/tmp/{{ octopussy_file_tar_gz }}"
+  tags: octopussy,install
+
+- name: "Create Directory"
+  file:
+    path: /tmp/octopussy
+    state: directory
+  tags: octopussy, install
+
+- name: "Unarchive Octopussy"
+  unarchive:
+    src: "/tmp/{{ octopussy_file_tar_gz }}"
+    dest: "/tmp/octopussy"
+  tags: octopussy,install
+
+- name: "Install Octopussy"
+  shell: |
+    cd /tmp/octopussy
+    bash LINUX/INSTALL.sh
+  tags: octopussy,install
+
+- include: iptables_changes.yml
+

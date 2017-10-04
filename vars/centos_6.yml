@@ -1,19 +1,20 @@
 ---
 #
-# Variables for CentOS 7.x
+# Variables for CentOS 6.x
 #
 octopussy_packages:
   - epel-release
   - expat-devel 	# required by XML::Parser required by XML::Simple
   - htmldoc
   - httpd
-  - mariadb-server
   - mod_perl
   - mod_ssl
   - mysql
+  - mysql-server
   - nscd
   - perl
-  - perl-App-cpanminus
+  - perl-devel
+  - perl-CPAN
   - rrdtool
   - rsyslog
   - sudo

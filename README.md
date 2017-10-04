@@ -3,6 +3,8 @@ Ansible Role 'Octopussy'
 
 Ansible Role to install/update [Octopussy](https://www.octopussy.pm)
 
+**WORK IN PROGRESS - DON'T USE IT !**
+
 Role Variables
 --------------
 
