@@ -43,14 +43,27 @@
 - name: "Unarchive Octopussy"
   unarchive:
     src: "/tmp/{{ octopussy_file_tar_gz }}"
-    dest: "/tmp/octopussy"
+    dest: "/tmp"
+    remote_src: yes
   tags: octopussy,install
 
 - name: "Install Octopussy"
   shell: |
-    cd /tmp/octopussy
+    cd /tmp/Octopussy-{{ octopussy_version }}
     bash LINUX/INSTALL.sh
   tags: octopussy,install
 
-- include: iptables_changes.yml
+- include: certificate.yml
+  tags: octopussy,certificate
 
+- include: rsyslog_configuration.yml
+  tags: octopussy,rsyslog
+
+#- include: iptables_changes.yml
+#  become: yes
+#  tags: octopussy,iptables
+
+- name: "Enable 'octopussy' service"
+  service:
+    name: octopussy
+    state: enabled
