@@ -7,3 +7,10 @@ octopussy_file_tar_gz: 			"octopussy-{{ octopussy_version }}.tar.gz"
 octopussy_url_sf: 				"https://sourceforge.net/projects/syslog-analyzer/files"
 octopussy_url_download_deb: 	"{{ octopussy_url_sf }}/{{ octopussy_file_deb }}/download"
 octopussy_url_download_tar_gz: 	"{{ octopussy_url_sf }}/{{ octopussy_file_tar_gz }}/download"
+
+octopussy:
+  certificate:
+    common_name:       octopussy.your.org
+    country_name:      FR  
+    email_address:     someone@your.org
+    organization_name: YourOrganisation
