@@ -12,6 +12,7 @@ octopussy_packages:
   - mysql
   - mysql-server
   - nscd
+  - openssl-devel
   - perl
   - perl-devel
   - perl-CPAN
@@ -32,6 +33,7 @@ octopussy_cpan_packages:
   - DBD::mysql 
   - DBI 
   - File::Slurp
+  - IO::Socket::SSL
   - JSON 
   - Linux::Inotify2 
   - List::MoreUtils 
@@ -42,6 +44,7 @@ octopussy_cpan_packages:
   - Net::FTP 
   - Net::LDAP 
   - Net::SCP 
+  - Net::SSLeay
   - Net::Telnet 
   - Net::XMPP
   - Proc::PID::File 
