@@ -1,0 +1,15 @@
+#
+# At first, I wanted to use 'openssl_privatekey', 'openssl_csr' & 'openssl_certificate'
+# but these modules require Ansible 2.4 & 'pyOpenSSL' module...
+# -> back to 'openssl' command
+#
+
+- name: "certificate - private key"
+  shell: openssl genrsa > /etc/octopussy/server.key
+  args:
+    creates: /etc/octopussy/server.key
+ 
+- name: "certificate - csr -> crt"
+  shell: "openssl req -new -x509 -subj /emailAddress={{ octopussy.certificate.email_address }}/C={{ octopussy.certificate.country_name }}/OU={{ octopussy.certificate.organization_name }}/CN={{ octopussy.certificate.common_name }}/ -nodes -sha1 -days 365 -key /etc/octopussy/server.key > /etc/octopussy/server.crt"
+  args:
+    creates: /etc/octopussy/server.crt
