@@ -1,2 +1,5 @@
 ---
-# handlers file for octopussy
+- name: restart service octopussy
+  service:
+    name: octopussy
+    state: restarted

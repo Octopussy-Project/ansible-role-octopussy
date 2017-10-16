@@ -1,69 +1,32 @@
 ---
-# tasks file for octopussy
-- name: "Requirements"
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution|lower }}_{{ ansible_distribution_major_version }}.yml"
-    - "{{ ansible_distribution|lower }}.yml"
-  tags: always,octopussy,vars
+- name: "[octopussy_requirements] => Install packages required by Octopussy"
+  include: octopussy_requirements.yml
+  tags: octopussy, requirements, packages, vars
 
-- name: "Install packages"
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    "{{ octopussy_packages }}"
-  tags: octopussy,packages,yum
+- name: "[octopussy_backup] => Backup Octopussy configuration if exists"
+  include: octopussy_backup.yml
+  tags: octopussy, backup
 
-  # TODO: don't use curl -> get_url
-- name: "Install CANMinus"
-  shell: curl -L http://cpanmin.us | perl - --sudo App::cpanminus 
-  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6')
-  tags: octopussy,packages,cpan
+- name: "[octopussy_download] => Download Octopussy from Github"
+  include: octopussy_download.yml
+  tags: octopussy, download
 
-- name: "Install CPAN packages"
-  cpanm:
-    name: "{{ item }}"
-  with_items:
-    "{{ octopussy_cpan_packages }}"
-  tags: octopussy,packages,cpan
-
-- name: "Download Octopussy"
-  get_url:
-    url: "{{ octopussy_url_download_tar_gz }}"
-    dest: "/tmp/{{ octopussy_file_tar_gz }}"
-  tags: octopussy,install
-
-- name: "Create Directory"
-  file:
-    path: /tmp/octopussy
-    state: directory
+- name: "[octopussy_install] => Install Octopussy"
+  include: octopussy_install.yml
   tags: octopussy, install
 
-- name: "Unarchive Octopussy"
-  unarchive:
-    src: "/tmp/{{ octopussy_file_tar_gz }}"
-    dest: "/tmp"
-    remote_src: yes
-  tags: octopussy,install
+- name: "[octopussy_certificate] => Create certificate for Octopussy"
+  include: octopussy_certificate.yml
+  tags: octopussy, certificate
 
-- name: "Install Octopussy"
-  shell: |
-    cd /tmp/Octopussy-{{ octopussy_version }}
-    bash LINUX/INSTALL.sh
-  tags: octopussy,install
+- name: "[octopussy_apache_configuration] => Configure Apache for Octopussy"
+  include: octopussy_apache_configuration.yml
+  tags: octopussy, apache
 
-- include: certificate.yml
-  tags: octopussy,certificate
+- name: "[octopussy_rsyslog_configuration] => Configure rsyslog for Octopussy"
+  include: octopussy_rsyslog_configuration.yml
+  tags: octopussy, rsyslog
 
-- include: rsyslog_configuration.yml
-  tags: octopussy,rsyslog
-
-#- include: iptables_changes.yml
-#  become: yes
-#  tags: octopussy,iptables
-
-- name: "Enable 'octopussy' service"
-  service:
-    name: octopussy
-    state: enabled
+- name: "[octopussy_mysql_configuration] => Configure MySQL for Octopussy"
+  include: octopussy_mysql_configuration.yml
+  tags: octopussy, mysql

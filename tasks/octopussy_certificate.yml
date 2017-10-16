@@ -4,12 +4,28 @@
 # -> back to 'openssl' command
 #
 
+- name: "certificate - create '/etc/octopussy' directory"
+  file:
+    name: /etc/octopussy
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+
 - name: "certificate - private key"
   shell: openssl genrsa > /etc/octopussy/server.key
   args:
     creates: /etc/octopussy/server.key
- 
+
 - name: "certificate - csr -> crt"
   shell: "openssl req -new -x509 -subj /emailAddress={{ octopussy.certificate.email_address }}/C={{ octopussy.certificate.country_name }}/OU={{ octopussy.certificate.organization_name }}/CN={{ octopussy.certificate.common_name }}/ -nodes -sha1 -days 365 -key /etc/octopussy/server.key > /etc/octopussy/server.crt"
   args:
     creates: /etc/octopussy/server.crt
+
+- name: "certificate - apply cotopussy:octopussy rights to private key and certificate"
+  file:
+    name: "{{ item }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - /etc/octopussy/server.crt
+    - /etc/octopussy/server.key

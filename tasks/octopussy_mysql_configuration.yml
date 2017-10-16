@@ -1,0 +1,20 @@
+# Unable to install MySQL-python => back to mysql client
+
+- name: "mysql - start & enable service '{{ octopussy_servicename_mysql }}'"
+  service:
+    name: "{{ octopussy_servicename_mysql }}" # 'mysql' or 'mariadb'
+    state: started
+    enabled: yes
+
+- name: "mysql - import 'LINUX/OCTOPUSSY.sql'"
+  shell: /usr/bin/mysql -u root < /tmp/octopussy/LINUX/OCTOPUSSY.sql
+
+#- name: "mysql - install Python MySQL module"
+#  pip:
+#    name: MySQL-python
+
+#- name: "mysql - import 'LINUX/OCTOPUSSY.sql'"
+#  mysql_db:
+#    state: import
+#    name: all
+#    target: /tmp/octopussy/LINUX/OCTOPUSSY.sql

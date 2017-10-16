@@ -1,0 +1,133 @@
+- name: "Get Perl installation directory"
+  shell: perldoc -l Path::Tiny | sed 's|/Path/Tiny.pm||'
+  register: perl_install_dir
+
+- name: "Add group 'octopussy'"
+  group:
+    name: "{{ octopussy_groupname }}"
+    system: yes
+
+- name: "Add user 'octopussy'"
+  user:
+    name: "{{ octopussy_username }}"
+    system: yes
+    createhome: no
+
+- name: "Create destination directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - /etc/aat/
+    - /etc/octopussy/
+    - /usr/share/aat/
+    - "{{ octopussy_dir_web }}"
+    - "{{ perl_install_dir.stdout }}/AAT/"
+    - "{{ perl_install_dir.stdout }}/Octopussy/"
+    - /var/lib/octopussy/
+    - /var/run/aat/
+    - "{{ octopussy_dir_run }}"
+
+- name: "Copy files"
+  shell: |
+    cd /tmp/octopussy
+    cp -r --preserve=mode bin/* {{ octopussy_dir_bin }}
+    cp -r etc/* /etc/
+    cp -r usr/share/aat/* /usr/share/aat/
+    cp -r usr/share/octopussy/* {{ octopussy_dir_web }}
+    cp -r var/lib/octopussy/* /var/lib/octopussy/
+    cp -r lib/AAT* lib/Octo* {{ perl_install_dir.stdout }}/
+
+- name: "find octopussy 'binaries'"
+  find:
+    paths: "{{ octopussy_dir_bin }}"
+    patterns: 'octo*'
+  register: find_octo_binaries
+
+- name: "chown octopussy 'binaries'"
+  file:
+    name: "{{ item.path }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - "{{ find_octo_binaries.files }}"
+
+- name: "chown directories"
+  file:
+    name: "{{ item }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+    recurse: yes
+  with_items:
+    - /etc/aat
+    - /etc/octopussy
+    - /usr/share/aat
+    - "{{ octopussy_dir_web }}"
+    - /var/lib/octopussy
+    - /var/run/aat
+    - "{{ octopussy_dir_run }}"
+
+- name: "Changes files rights 0644 for AAT.pm & Octopussy.pm"
+  file:
+    name: "{{ item }}"
+    mode: 0644
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - "{{ perl_install_dir.stdout }}/AAT.pm"
+    - "{{ perl_install_dir.stdout }}/Octopussy.pm"
+
+- name: "Changes files rights 0644 for AAT/ & Octopussy/"
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: 0644
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+    recurse: yes
+  with_items:
+    - "{{ perl_install_dir.stdout }}/AAT"
+    - "{{ perl_install_dir.stdout }}/Octopussy"
+
+- name: "Changes directory rights for AAT & Octopussy"
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: a+X
+    recurse: yes
+  with_items:
+    - "{{ perl_install_dir.stdout }}/AAT"
+    - "{{ perl_install_dir.stdout }}/Octopussy"
+
+- name: "Select apache2.conf for 'Debian' family"
+  command: mv /etc/octopussy/apache2_debian.conf /etc/octopussy/apache2.conf
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: "Set apache2.conf for 'not Debian family"
+  command: mv /etc/octopussy/apache2_other.conf /etc/octopussy/apache2.conf
+  when:
+    - ansible_os_family != 'Debian'
+
+- name: "create symlink /etc/init.d/octopussy -> /usr/sbin/octopussy"
+  file:
+    src: /usr/sbin/octopussy
+    dest: /etc/init.d/octopussy
+    state: link
+
+- name: "Add octo_logrotate to cron.daily"
+  template:
+    src: cron.daily.j2
+    dest: /etc/cron.daily/octo_logrotate
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  tags: cron
+
+- name: "Enable 'octopussy' service"
+  service:
+    name: octopussy
+    enabled: yes
+  notify:
+    - restart service octopussy

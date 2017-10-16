@@ -2,6 +2,9 @@
 #
 # Variables for CentOS 6.x
 #
+
+octopussy_apache_bin: /usr/sbin/httpd
+
 octopussy_packages:
   - epel-release
   - expat-devel 	# required by XML::Parser required by XML::Simple
@@ -10,12 +13,18 @@ octopussy_packages:
   - mod_perl
   - mod_ssl
   - mysql
+  - mysql-devel
   - mysql-server
   - nscd
   - openssl-devel
+  - patch
   - perl
   - perl-devel
   - perl-CPAN
+  - psmisc		# required for 'killall' in /etc/init.d/octopussy
+  - python34
+  - python34-devel
+  - python-pip
   - rrdtool
   - rsyslog
   - sudo
@@ -25,14 +34,20 @@ octopussy_packages:
 octopussy_cpan_packages:
   - Apache::ASP
   - App::Info
-  - App::Info::HTTPD 
+  - App::Info::HTTPD
+  - Authen::SASL
   - Cache::Cache 
   - Crypt::PasswdMD5
+  - Data::GUID
   - Date::Manip
+  - Time::HiRes				# required by Test2::Require::Module
+  - Test2::Require::Module		# required by DateTime::Format::Strptime
   - DateTime::Format::Strptime 
   - DBD::mysql 
-  - DBI 
-  - File::Slurp
+  - DBI
+  - Email::MIME
+  - Email::Sender
+  - Getopt::Long
   - IO::Socket::SSL
   - JSON 
   - Linux::Inotify2 
@@ -40,13 +55,14 @@ octopussy_cpan_packages:
   - Locale::Maketext::Lexicon 
   - Locale::Maketext::Simple 
   - LWP 
-  - Mail::Sender 
   - Net::FTP 
   - Net::LDAP 
   - Net::SCP 
   - Net::SSLeay
   - Net::Telnet 
   - Net::XMPP
+  - Pod::Find
+  - Pod::Usage
   - Proc::PID::File 
   - Proc::ProcessTable 
   - Readonly 
