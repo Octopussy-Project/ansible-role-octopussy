@@ -1,0 +1,53 @@
+- name: "rsyslog - create '/var/spool/octopussy' directory"
+  file:
+    name: "{{ octopussy_dir_spool }}"
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+
+- name: "rsyslog - stat '{{ octopussy_file_fifo }}'"
+  stat:
+    path: "{{ octopussy_file_fifo }}"
+  register: octo_fifo
+
+- name: "rsyslog - create fifo for rsyslog"
+  command: mkfifo {{ octopussy_file_fifo }}
+  when: (not octo_fifo.stat.exists )
+
+- name: "rsyslog - set rights for fifo"
+  file:
+    path: "{{ octopussy_file_fifo }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+
+- name: "rsyslog - Enable local system et system logging, UDP & TCP syslog reception"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^.*\$ModLoad\s+imuxsock',      line: '$ModLoad imuxsock'  }
+    - { regexp: '^.*\$ModLoad\s+imjournal',     line: '$ModLoad imjournal' }
+    - { regexp: '^.*\$ModLoad\s+imudp',         line: '$ModLoad imudp'     }
+    - { regexp: '^.*\$UDPServerRun\s+514',      line: '$UDPServerRun 514'  }
+    - { regexp: '^.*\$ModLoad\s+imtcp',         line: '$ModLoad imtcp'     }
+    - { regexp: '^.*\$InputTCPServerRun\s+514', line: '$InputTCPServerRun 514' }
+
+- name: "rsyslog - disable default timestamp format"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: '$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
+    line: '#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
+
+- name: "rsyslog - include all config files in /etc/rsyslog.d/"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: '$IncludeConfig /etc/rsyslog.d/*.conf'
+    line: '$IncludeConfig /etc/rsyslog.d/*.conf'
+
+- name: "rsyslog - Restart & Enable 'rsyslog' service"
+  service:
+    name: rsyslog
+    enabled: yes
+    state: restarted
+  ignore_errors: yes # ignore systemd issues https://github.com/ansible/ansible-modules-core/issues/915

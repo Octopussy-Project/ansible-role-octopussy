@@ -9,7 +9,16 @@ Role Variables
 --------------
 
 ```
-octopussy_version:
+octopussy_version: "1.0.16"
+```
+
+```
+octopussy:
+  certificate:
+    common_name:       octopussy.your.org
+    country_name:      FR  
+    email_address:     someone@your.org
+    organization_name: YourOrganisation
 ```
 
 Dependencies
