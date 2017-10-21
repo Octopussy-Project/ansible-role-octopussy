@@ -4,6 +4,7 @@
 #
 
 octopussy_apache_bin: /usr/sbin/httpd
+octopussy_mysql_bin: /usr/bin/mysql
 
 octopussy_packages:
   - epel-release
