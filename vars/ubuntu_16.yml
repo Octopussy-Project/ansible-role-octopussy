@@ -1,0 +1,60 @@
+---
+#
+# Variables for Ubuntu 16.x
+#
+
+octopussy_apache_bin: /usr/sbin/apache2
+octopussy_mysql_bin: /usr/bin/mysql
+
+octopussy_packages:
+  - adduser
+  - apache2
+  - debconf
+  - htmldoc
+  - libapache2-mod-perl2
+  - librrd4
+  - mysql-server
+  - nscd
+  - patch
+  - perl
+  - perl-doc
+  - perl-modules
+  - rrdtool
+  - rsyslog
+  - sudo
+# Perl modules
+  - libapache-asp-perl
+  - libapp-info-perl
+  - libunix-syslog-perl
+  - libxml-simple-perl
+  - libcrypt-passwdmd5-perl
+  - libdbi-perl
+  - libdbd-mysql-perl
+  - libsys-cpu-perl
+  - libdate-manip-perl
+  - libnet-scp-perl
+  - libnet-telnet-perl
+  - libnet-xmpp-perl
+  - libnet-ldap-perl
+  - liblinux-inotify2-perl
+  - libcache-cache-perl
+  - libpath-tiny-perl
+  - libproc-processtable-perl 
+  - liburi-perl
+  - libproc-pid-file-perl
+  - libwww-perl
+  - libjson-perl
+  - libreadonly-perl
+  - libregexp-assemble-perl
+  - liblist-moreutils-perl 
+  - libterm-progressbar-perl
+  - liblocale-maketext-lexicon-perl
+  - libdatetime-format-strptime-perl
+  - libdata-guid-perl
+  - libauthen-sasl-perl
+  - libemail-mime-perl
+  - libemail-sender-perl
+
+octopussy_cpan_packages: []
+
+octopussy_servicename_mysql: mysql

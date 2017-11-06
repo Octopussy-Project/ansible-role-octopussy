@@ -1,0 +1,8 @@
+- name: "check if octo_tool is installed"
+  stat:
+    path: /usr/sbin/octo_tool
+  register: octo_tool
+
+- name: "Backup Octopussy configuration with 'octo_tool'"
+  command: /usr/sbin/octo_tool backup /etc/octopussy/octopussy_ugrade_backup
+  when: octo_tool.stat.exists

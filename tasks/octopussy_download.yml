@@ -1,0 +1,16 @@
+- name: "Install git"
+  package:
+    name: git
+
+- name: "Git cloning Octopussy repository"
+  git:
+    repo: "{{ octopussy_url_git }}"
+    version: "{{ octopussy_git_branch }}"
+    dest: "/tmp/octopussy"
+  when: (octopussy_git_branch is defined) and (octopussy_git_branch | trim != '')
+
+#- name: "Download Octopussy on sourceforge"
+#  get_url:
+#    url: "{{ octopussy_url_download_tar_gz }}"
+#    dest: "/tmp/{{ octopussy_file_tar_gz }}"
+#  when: (octopussy_git_branch is undefined)

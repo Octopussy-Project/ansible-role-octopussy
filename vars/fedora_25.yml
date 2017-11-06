@@ -1,53 +1,63 @@
 ---
 #
-# Variables for CentOS 7.x
+# Variables for Fedora 25
 #
 
 octopussy_apache_bin: /usr/sbin/httpd
 octopussy_mysql_bin: /usr/bin/mysql
 
 octopussy_packages:
-  - epel-release
   - expat-devel 	# required by XML::Parser required by XML::Simple
   - htmldoc
   - httpd
-  - mariadb-devel	# required by 'MySQL Python'
-  - mariadb-server
   - mod_perl
   - mod_ssl
   - mysql
+  - mysql-devel
+  - mysql-server
   - nscd
+  - openssl-devel
   - patch
   - perl
+  - perl-devel
   - perl-App-cpanminus
-  - psmisc              # required for 'killall' in /etc/init.d/octopussy
-  - python34
-  - python34-devel
+  - perl-CPAN
+  - psmisc		# required for 'killall' in /etc/init.d/octopussy
+  - python
+  - python-devel
   - python-pip
   - rrdtool
   - rsyslog
   - sudo
   - gcc
   - make
+#
+  - perl-bignum
+  - perl-open
+  - perl-Env
+  - perl-Error
+  - perl-Storable
+  - perl-Test
 
 octopussy_cpan_packages:
   - Apache::ASP
   - App::Info
   - App::Info::HTTPD
   - Authen::SASL
-  - Cache::Cache
-  - Env					# required by Class::MethodMaker
-  - Fatal				# required by Class::MethodMaker
-  - Class::MethodMaker			# Required by Term::ProgressBar
+  - Cache::Cache 
   - Crypt::PasswdMD5
   - Data::GUID
   - Date::Manip
+  - Time::HiRes				# required by Test2::Require::Module
+  - Test2::Require::Module		# required by DateTime::Format::Strptime
   - DateTime::Format::Strptime 
   - DBD::mysql 
   - DBI
   - Email::MIME
   - Email::Sender
+  - Fatal				# required by Term::ProgressBar
   - Getopt::Long
+  - IO::Socket::SSL
   - JSON 
   - Linux::Inotify2 
   - List::MoreUtils 
@@ -57,6 +67,7 @@ octopussy_cpan_packages:
   - Net::FTP 
   - Net::LDAP 
   - Net::SCP 
+  - Net::SSLeay
   - Net::Telnet 
   - Net::XMPP
   - Pod::Find
@@ -72,5 +83,3 @@ octopussy_cpan_packages:
   - URI 
   - version 
   - XML::Simple
-
-octopussy_servicename_mysql: mariadb

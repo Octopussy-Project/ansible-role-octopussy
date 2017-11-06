@@ -1,0 +1,79 @@
+- name: "apache - Get installed version of Apache"
+  shell: "{{ octopussy_apache_bin }} -v"
+  register: _apache_version
+
+- name: "apache - create apache_version variable"
+  set_fact:
+    apache2_version: "{{ _apache_version.stdout.split()[2].split('/')[1].split('.')[1] }}"
+
+- name: "apache - create required directories for Apache"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - /var/cache/octopussy/asp
+    - /var/lib/octopussy/rrd_png
+
+- name: "apache - create required symlinks for Apache"
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - { src: '/usr/share/aat', dest: '/usr/share/octopussy/aat' }
+    - { src: '/var/lib/octopussy/rrd_png/', dest: '/usr/share/octopussy/rrd' }
+
+- name: "apache - Get Perl installation directory"
+  shell: perldoc -l Path::Tiny | sed 's|/Path/Tiny.pm||'
+  register: perl_install_dir
+  tags: patch
+
+- name: "apache - patch 'Apache::ASP::StateManager' for Apache 2.4 only"
+  patch:
+    src: "{{ item }}"
+    dest: "{{ perl_install_dir.stdout }}/Apache/ASP/StateManager.pm"
+    remote_src: yes
+  with_items:
+    - /tmp/octopussy/etc/octopussy/patches/apache-asp-statemanager_httponly.patch
+    - /tmp/octopussy/etc/octopussy/patches/apache-asp-statemanager_remote_ip.patch
+  when:
+    - apache2_version != '2'
+  tags: patch
+
+- name: "apache - remove 'IncludeOptional' line from /etc/octopussy/apache2.conf"
+  lineinfile:
+    dest: /etc/octopussy/apache2.conf
+    state: absent
+    regexp: '^IncludeOptional '
+  when:
+    - ansible_os_family != 'Debian'
+
+- name: "apache - load 'authz_core', 'mpm_prefork' & 'unixd' modules in /etc/octopussy/apache2.conf for Apache 2.4 only"
+  lineinfile:
+    dest: /etc/octopussy/apache2.conf
+    insertbefore: '^User '
+    line: LoadModule {{ item }}_module modules/mod_{{ item }}.so
+  with_items:
+    - authz_core
+    - mpm_prefork
+    - unixd
+  when:
+    - apache2_version != '2'
+    - ansible_os_family != 'Debian'
+
+- name: "apache - configure /etc/octopussy/apache2.conf modules"
+  lineinfile:
+    dest: /etc/octopussy/apache2.conf
+    insertbefore: '^User '
+    line: LoadModule {{ item }}_module modules/mod_{{ item }}.so
+  with_items:
+    - dir
+    - log_config
+    - mime
+    - perl
+    - setenvif
+    - ssl
+  when:
+    - ansible_os_family != 'Debian'

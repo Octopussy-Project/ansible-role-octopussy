@@ -1,0 +1,45 @@
+# Unable to install MySQL-python => back to mysql client
+
+- name: "mysql - Get installed version of MySQL"
+  shell: "{{ octopussy_mysql_bin }} --version"
+  register: _mysql_version
+
+- name: "mysql - create mysql5_version variable"
+  set_fact:
+    mysql5_version: "{{ _mysql_version.stdout.split()[4].split('.')[1] }}"
+
+- debug:
+    msg: "mysql5 version {{ mysql5_version }}"
+- name: "mysql - start & enable service '{{ octopussy_servicename_mysql }}'"
+  service:
+    name: "{{ octopussy_servicename_mysql }}" # 'mysql', 'mysqld' or 'mariadb'
+    state: started
+    enabled: yes
+
+- name: "mysql - wait for mysql start"
+  wait_for:
+    delay: 5
+    timeout: 120
+    host: 127.0.0.1
+    port: 3306
+    state: started
+
+- name: "mysql - import 'LINUX/OCTOPUSSY.sql'"
+  shell: /usr/bin/mysql -u root < /tmp/octopussy/LINUX/OCTOPUSSY.sql
+  when:
+    - mysql5_version < '7'
+
+- name: "mysql - import 'LINUX/OCTOPUSSY.mysql57'"
+  shell: /usr/bin/mysql -u root < /tmp/octopussy/LINUX/OCTOPUSSY.mysql57
+  when:
+    - mysql5_version >= '7'
+
+#- name: "mysql - install Python MySQL module"
+#  pip:
+#    name: MySQL-python
+
+#- name: "mysql - import 'LINUX/OCTOPUSSY.sql'"
+#  mysql_db:
+#    state: import
+#    name: all
+#    target: /tmp/octopussy/LINUX/OCTOPUSSY.sql

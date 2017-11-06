@@ -1,0 +1,4 @@
+#!/bin/sh
+
+test -x {{ octopussy_bin_logrotate }} || exit 0
+sudo -u {{ octopussy_username }} {{ octopussy_bin_logrotate }} --quiet

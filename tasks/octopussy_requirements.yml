@@ -1,0 +1,55 @@
+- name: "List Requirements"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution|lower }}_{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution|lower }}.yml"
+  tags: always, vars
+
+- name: "Install packages with 'apt'"
+  apt:
+    name: "{{ item }}"
+  with_items:
+    "{{ octopussy_packages }}"
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+  tags: apt
+
+- name: "Install package 'epel-release' with 'yum'"
+  yum:
+    name: epel-release
+  when: (ansible_distribution == 'CentOS')
+  tags: yum
+
+- name: "Install packages with 'dnf'"
+  dnf:
+    name: "{{ item }}"
+  with_items:
+    "{{ octopussy_packages }}"
+  when: (ansible_distribution == 'Fedora')
+  tags: dnf
+
+- name: "Install packages with 'yum'"
+  yum:
+    name: "{{ item }}"
+  with_items:
+    "{{ octopussy_packages }}"
+  when: (ansible_distribution == 'CentOS')
+  tags: yum
+
+- name: "Donwload CPANMinus"
+  get_url:
+    url: http://cpanmin.us
+    dest: /tmp/cpanminus_install.pl
+  tags: cpan, cpanminus
+
+- name: "Install CPANMinus"
+  shell: perl /tmp/cpanminus_install.pl --sudo App::cpanminus
+  #shell: curl -L http://cpanmin.us | perl - --sudo App::cpanminus
+  when: (ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6')
+  tags: cpan, cpanminus
+
+- name: "Install CPAN packages"
+  cpanm:
+    name: "{{ item }}"
+  with_items:
+    "{{ octopussy_cpan_packages }}"
+  tags: cpan
