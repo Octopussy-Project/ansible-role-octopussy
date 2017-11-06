@@ -5,26 +5,34 @@
     - "{{ ansible_distribution|lower }}.yml"
   tags: always, vars
 
-- name: "Install packages with apt"
+- name: "Install packages with 'apt'"
   apt:
     name: "{{ item }}"
   with_items:
     "{{ octopussy_packages }}"
   when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
-  tags: yum
+  tags: apt
 
-- name: "Install package 'epel-release' with yum"
+- name: "Install package 'epel-release' with 'yum'"
   yum:
     name: epel-release
-  when: (ansible_distribution == 'CentOS' or ansible_distribution == 'Fedora')
+  when: (ansible_distribution == 'CentOS')
   tags: yum
 
-- name: "Install packages with yum"
+- name: "Install packages with 'dnf'"
+  dnf:
+    name: "{{ item }}"
+  with_items:
+    "{{ octopussy_packages }}"
+  when: (ansible_distribution == 'Fedora')
+  tags: dnf
+
+- name: "Install packages with 'yum'"
   yum:
     name: "{{ item }}"
   with_items:
     "{{ octopussy_packages }}"
-  when: (ansible_distribution == 'CentOS' or ansible_distribution == 'Fedora')
+  when: (ansible_distribution == 'CentOS')
   tags: yum
 
 - name: "Donwload CPANMinus"
