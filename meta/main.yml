@@ -27,6 +27,10 @@ galaxy_info:
         - trusty # 14.04
         - xenial # 16.04
 
-  galaxy_tags: []
+  galaxy_tags:
+    - application
+    - logging
+    - monitoring
+    - system
 
 dependencies: []
