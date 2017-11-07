@@ -7,16 +7,16 @@ galaxy_info:
 
   platforms:
 
-    - name: CentOS
-      versions:
-        - 6 # tested on 6.9
-        - 7 # tested on 7.4
-
     - name: Debian
       versions:
         - jessie # tested on 8.x
         - stretch # tested on 9.x
-
+    
+    - name: EL
+      versions:
+        - 6 # tested on CentOS 6.9
+        - 7 # tested on CentOS 7.4
+        
     - name: Fedora
       versions:
         - 25
