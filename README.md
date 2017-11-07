@@ -1,12 +1,16 @@
 Ansible Role 'Octopussy'
 ========================
 
-Ansible Role to install/update [Octopussy](https://www.octopussy.pm)
+Ansible Role to install/update [Octopussy](https://www.octopussy.pm) application.
 
-**WORK IN PROGRESS - DON'T USE IT !**
+**Alpha version: contact me if you need more information**
 
 Role Variables
 --------------
+
+```
+octopussy_git_branch: "install-scripts-ansible"
+```
 
 ```
 octopussy_version: "1.0.16"
@@ -24,17 +28,16 @@ octopussy:
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
+For a full installation of Octopussy:
 ```
 - hosts: octopussy_server
   roles:
-    - sebthebert.octopussy
+    - Octopussy-Project.octopussy
 ```
 
 License
