@@ -1,0 +1,6 @@
+---
+# Playbook Test for 'octopussy' role"
+- hosts: localhost
+
+  roles:
+    - octopussy
