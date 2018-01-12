@@ -3,6 +3,8 @@ Ansible Role 'Octopussy'
 
 Ansible Role to install/update [Octopussy](https://www.octopussy.pm) application.
 
+[![Build Status](https://travis-ci.org/Octopussy-Project/ansible-role-octopussy.svg?branch=master)](https://travis-ci.org/Octopussy-Project/ansible-role-octopussy)
+
 **Alpha version: contact me if you need more information**
 
 Role Variables
