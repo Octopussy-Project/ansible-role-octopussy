@@ -21,9 +21,9 @@ script:
   - 'sudo docker run --detach --privileged --security-opt seccomp=unconfined -v /sys/fs/cgroup:/sys/fs/cgroup:ro --volume="${PWD}":/etc/ansible/roles/octopussy:ro ${distribution}-${version}:ansible > "${container_id}"'
   - 'sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/octopussy/travis/playbook_test.yml --syntax-check'
   - 'sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/octopussy/travis/playbook_test.yml'
-  - >
-    sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/octopussy/travis/playbook_test.yml
-    | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && exit 1)
-  - 'sudo docker rm -f "$(cat ${container_id})"'
+#  - >
+#    sudo docker exec "$(cat ${container_id})" env ANSIBLE_FORCE_COLOR=1 ansible-playbook -v /etc/ansible/roles/octopussy/travis/playbook_test.yml
+#    | grep -q 'changed=0.*failed=0'
+#    && (echo 'Idempotence test: pass' && exit 0)
+#    || (echo 'Idempotence test: fail' && exit 1)
+#  - 'sudo docker rm -f "$(cat ${container_id})"'
