@@ -2,7 +2,8 @@ FROM debian:8
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends git python python-pip && \
+    apt-get install -y --no-install-recommends \
+      build-essential git python-dev python-pip && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade setuptools && pip install ansible
