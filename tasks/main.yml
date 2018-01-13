@@ -1,32 +1,32 @@
 ---
 - name: "[octopussy_requirements] => Install packages required by Octopussy"
-  import_task: octopussy_requirements.yml
+  import_tasks: octopussy_requirements.yml
   tags: octopussy, requirements, packages, vars
 
 - name: "[octopussy_backup] => Backup Octopussy configuration if exists"
-  import_task: octopussy_backup.yml
+  import_tasks: octopussy_backup.yml
   tags: octopussy, backup
 
 - name: "[octopussy_download] => Download Octopussy from Github"
-  import_task: octopussy_download.yml
+  import_tasks: octopussy_download.yml
   tags: octopussy, download
 
 - name: "[octopussy_install] => Install Octopussy"
-  import_task: octopussy_install.yml
+  import_tasks: octopussy_install.yml
   tags: octopussy, install
 
 - name: "[octopussy_certificate] => Create certificate for Octopussy"
-  import_task: octopussy_certificate.yml
+  import_tasks: octopussy_certificate.yml
   tags: octopussy, certificate
 
 - name: "[octopussy_apache_configuration] => Configure Apache for Octopussy"
-  import_task: octopussy_apache_configuration.yml
+  import_tasks: octopussy_apache_configuration.yml
   tags: octopussy, apache
 
 - name: "[octopussy_rsyslog_configuration] => Configure rsyslog for Octopussy"
-  import_task: octopussy_rsyslog_configuration.yml
+  import_tasks: octopussy_rsyslog_configuration.yml
   tags: octopussy, rsyslog
 
 - name: "[octopussy_mysql_configuration] => Configure MySQL for Octopussy"
-  import_task: octopussy_mysql_configuration.yml
+  import_tasks: octopussy_mysql_configuration.yml
   tags: octopussy, mysql
