@@ -4,6 +4,10 @@ sudo: required
 env:
   - distribution: centos
     version: 7
+  - distribution: debian
+    version: 8
+  - distribution: debian
+    version: 9
 
 services:
   - docker
