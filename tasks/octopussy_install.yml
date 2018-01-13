@@ -1,6 +1,7 @@
 - name: "Get Perl installation directory"
   shell: perldoc -l Path::Tiny | sed 's|/Path/Tiny.pm||'
   register: perl_install_dir
+  changed_when: false # idempotency requirement
 
 - name: "Add group 'octopussy'"
   group:

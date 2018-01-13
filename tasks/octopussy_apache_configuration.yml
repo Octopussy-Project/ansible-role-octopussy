@@ -1,6 +1,7 @@
 - name: "apache - Get installed version of Apache"
   shell: "{{ octopussy_apache_bin }} -v"
   register: _apache_version
+  changed_when: false # idempotency requirement
 
 - name: "apache - create apache_version variable"
   set_fact:
@@ -28,6 +29,7 @@
 - name: "apache - Get Perl installation directory"
   shell: perldoc -l Path::Tiny | sed 's|/Path/Tiny.pm||'
   register: perl_install_dir
+  changed_when: false # idempotency requirement
   tags: patch
 
 - name: "apache - patch 'Apache::ASP::StateManager' for Apache 2.4 only"
