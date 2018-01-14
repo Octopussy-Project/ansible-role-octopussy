@@ -8,6 +8,10 @@ env:
     version: 8
   - distribution: debian
     version: 9
+  - distribution: fedora
+    version: 25
+  - distribution: fedora
+    version: 26
 
 services:
   - docker
