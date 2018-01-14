@@ -50,6 +50,7 @@
 - name: "Install CPAN packages"
   cpanm:
     name: "{{ item }}"
+    notest: yes
   with_items:
     "{{ octopussy_cpan_packages }}"
   tags: cpan
