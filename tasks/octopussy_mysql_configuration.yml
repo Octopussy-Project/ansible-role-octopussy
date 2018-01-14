@@ -3,6 +3,7 @@
 - name: "mysql - Get installed version of MySQL"
   shell: "{{ octopussy_mysql_bin }} --version"
   register: _mysql_version
+  changed_when: false # idempotency requirement
 
 - name: "mysql - create mysql5_version variable"
   set_fact:
