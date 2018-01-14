@@ -36,13 +36,13 @@
 - name: "rsyslog - disable default timestamp format"
   lineinfile:
     dest: /etc/rsyslog.conf
-    regexp: '^$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
+    regexp: '^.*\$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
     line: '#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
 
 - name: "rsyslog - include all config files in /etc/rsyslog.d/"
   lineinfile:
     dest: /etc/rsyslog.conf
-    regexp: '^$IncludeConfig /etc/rsyslog.d/*.conf'
+    regexp: '^.*\$IncludeConfig /etc/rsyslog\.d/\*\.conf'
     line: '$IncludeConfig /etc/rsyslog.d/*.conf'
 
 - name: "rsyslog - Restart & Enable 'rsyslog' service"
