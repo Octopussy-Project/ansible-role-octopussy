@@ -31,7 +31,6 @@ octopussy_packages:
   - sudo
   - gcc
   - make
-#
   - perl-bignum
   - perl-open
   - perl-Env
