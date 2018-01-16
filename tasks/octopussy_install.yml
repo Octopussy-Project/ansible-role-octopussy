@@ -31,29 +31,70 @@
     - /var/run/aat/
     - "{{ octopussy_dir_run }}"
 
-- name: "Copy files"
-  shell: |
-    cd /tmp/octopussy
-    cp -r --preserve=mode bin/* {{ octopussy_dir_bin }}
-    cp -r etc/* /etc/
-    cp -r usr/share/aat/* /usr/share/aat/
-    cp -r usr/share/octopussy/* {{ octopussy_dir_web }}
-    cp -r var/lib/octopussy/* /var/lib/octopussy/
-    cp -r lib/AAT* lib/Octo* {{ perl_install_dir.stdout }}/
-
-- name: "find octopussy 'binaries'"
+- name: "Get list of octopussy 'bin' files"
   find:
-    paths: "{{ octopussy_dir_bin }}"
-    patterns: 'octo*'
-  register: find_octo_binaries
+    paths: /tmp/octopussy/bin
+  register: find_octo_bin
 
-- name: "chown octopussy 'binaries'"
-  file:
-    name: "{{ item.path }}"
+- name: "Copy octopussy 'bin' files"
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ octopussy_dir_bin }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+    unsafe_writes: yes
+  with_items:
+    - "{{ find_octo_bin.files }}"
+
+- name: "Get list of octopussy 'etc', 'usr_share_aat', 'var_lib' files"
+  find:
+    paths: 
+      - /tmp/octopussy/etc
+      - /tmp/octopussy/usr/share/aat
+      - /tmp/octopussy/var/lib/octopussy
+    recurse: yes
+  register: find_octo_various
+
+- name: "Copy octopussy 'etc', 'usr_share_aat', 'var_lib' files"
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ item.path | regex_replace('/tmp/octopussy', '') }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+    unsafe_writes: yes
+  with_items:
+    - "{{ find_octo_various.files }}"
+
+- name: "Get list of octopussy 'lib' files"
+  find:
+    paths: /tmp/octopussy/lib
+    recurse: yes
+  register: find_octo_lib
+
+- name: "Copy octopussy 'lib' files"
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ perl_install_dir.stdout }}/{{ item.path | regex_replace('/tmp/octopussy/lib/', '') }}"
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+    unsafe_writes: yes
+  with_items:
+    - "{{ find_octo_lib.files }}"
+
+- name: "Get list of octopussy 'web' files"
+  find:
+    paths: /tmp/octopussy/usr/share/octopussy
+    recurse: yes
+  register: find_octo_web
+
+- name: "Copy octopussy 'web' files"
+  copy:
+    src: "{{ item.path }}"
+    dest: "{{ octopussy_dir_web }}/{{ item.path | regex_replace('/tmp/octopussy/usr/share/octopussy/', '') }}"
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
   with_items:
-    - "{{ find_octo_binaries.files }}"
+    - "{{ find_octo_web.files }}"
 
 - name: "chown directories"
   file:
@@ -62,11 +103,6 @@
     group: "{{ octopussy_groupname }}"
     recurse: yes
   with_items:
-    - /etc/aat
-    - /etc/octopussy
-    - /usr/share/aat
-    - "{{ octopussy_dir_web }}"
-    - /var/lib/octopussy
     - /var/run/aat
     - "{{ octopussy_dir_run }}"
 
