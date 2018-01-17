@@ -57,7 +57,7 @@
 
 - name: "Create directories for 'etc', 'usr_share_aat', 'var_lib'"
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.path | regex_replace('/tmp/octopussy', '') }}"
     state: directory
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
@@ -91,7 +91,7 @@
 
 - name: "Create directories for 'lib'"
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.path | regex_replace('/tmp/octopussy', '') }}"
     state: directory
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
@@ -122,7 +122,7 @@
 
 - name: "Create directories for 'web'"
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.path | regex_replace('/tmp/octopussy', '') }}"
     state: directory
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
