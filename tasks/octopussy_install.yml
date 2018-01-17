@@ -34,7 +34,7 @@
 - name: "Get list of octopussy 'bin' files"
   find:
     paths: /tmp/octopussy/bin
-  register: find_octo_bin
+  register: find_octo_bin_files
 
 - name: "Copy octopussy 'bin' files"
   copy:
@@ -42,9 +42,26 @@
     dest: "{{ octopussy_dir_bin }}"
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
-    unsafe_writes: yes
   with_items:
-    - "{{ find_octo_bin.files }}"
+    - "{{ find_octo_bin_files.files }}"
+
+- name: "Get list of octopussy 'etc', 'usr_share_aat', 'var_lib' directories"
+  find:
+    paths:
+      - /tmp/octopussy/etc
+      - /tmp/octopussy/usr/share/aat
+      - /tmp/octopussy/var/lib/octopussy
+    file_type: directory
+    recurse: yes
+  register: find_octo_various_dirs
+
+- name: "Create directories for 'etc', 'usr_share_aat', 'var_lib'"
+  file:
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - "{{ find_octo_various_dirs.files }}"
 
 - name: "Get list of octopussy 'etc', 'usr_share_aat', 'var_lib' files"
   find:
@@ -53,7 +70,7 @@
       - /tmp/octopussy/usr/share/aat
       - /tmp/octopussy/var/lib/octopussy
     recurse: yes
-  register: find_octo_various
+  register: find_octo_various_files
 
 - name: "Copy octopussy 'etc', 'usr_share_aat', 'var_lib' files"
   copy:
@@ -61,9 +78,23 @@
     dest: "{{ item.path | regex_replace('/tmp/octopussy', '') }}"
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
-    unsafe_writes: yes
   with_items:
-    - "{{ find_octo_various.files }}"
+    - "{{ find_octo_various_files.files }}"
+
+- name: "Get list of octopussy 'lib' directories"
+  find:
+    paths: /tmp/octopussy/lib
+    file_type: directory
+    recurse: yes
+  register: find_octo_lib_dirs
+
+- name: "Create directories for 'lib'"
+  file:
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - "{{ find_octo_lib_dirs.files }}"
 
 - name: "Get list of octopussy 'lib' files"
   find:
@@ -77,9 +108,23 @@
     dest: "{{ perl_install_dir.stdout }}/{{ item.path | regex_replace('/tmp/octopussy/lib/', '') }}"
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
-    unsafe_writes: yes
   with_items:
     - "{{ find_octo_lib.files }}"
+
+- name: "Get list of octopussy 'web' directories"
+  find:
+    paths: /tmp/octopussy/usr/share/octopussy
+    file_type: directory
+    recurse: yes
+  register: find_octo_web_dirs
+
+- name: "Create directories for 'web'"
+  file:
+    state: directory
+    owner: "{{ octopussy_username }}"
+    group: "{{ octopussy_groupname }}"
+  with_items:
+    - "{{ find_octo_web_dirs.files }}"
 
 - name: "Get list of octopussy 'web' files"
   find:

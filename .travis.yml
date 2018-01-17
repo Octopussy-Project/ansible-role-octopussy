@@ -13,9 +13,9 @@ env:
   - distribution: fedora
     version: 26
   - distribution: ubuntu
-    version: 1404
+    version: 14.04
   - distribution: ubuntu
-    version: 1604
+    version: 16.04
 
 services:
   - docker
