@@ -7,7 +7,7 @@ octopussy_apache_bin: /usr/sbin/httpd
 octopussy_mysql_bin: /usr/bin/mysql
 
 octopussy_packages:
-  - expat-devel 	# required by XML::Parser required by XML::Simple
+  - expat-devel # required by XML::Parser required by XML::Simple
   - htmldoc
   - httpd
   - mod_perl
@@ -22,7 +22,7 @@ octopussy_packages:
   - perl-devel
   - perl-App-cpanminus
   - perl-CPAN
-  - psmisc		# required for 'killall' in /etc/init.d/octopussy
+  - psmisc # required for 'killall' in /etc/init.d/octopussy
   - python
   - python-devel
   - python-pip
@@ -47,14 +47,14 @@ octopussy_cpan_packages:
   - Crypt::PasswdMD5
   - Data::GUID
   - Date::Manip
-  - Time::HiRes				# required by Test2::Require::Module
-  - Test2::Require::Module		# required by DateTime::Format::Strptime
+  - Time::HiRes # required by Test2::Require::Module
+  - Test2::Require::Module # required by DateTime::Format::Strptime
   - DateTime::Format::Strptime 
   - DBD::mysql 
   - DBI
   - Email::MIME
   - Email::Sender
-  - Fatal				# required by Term::ProgressBar
+  - Fatal # required by Term::ProgressBar
   - Getopt::Long
   - IO::Socket::SSL
   - JSON 
