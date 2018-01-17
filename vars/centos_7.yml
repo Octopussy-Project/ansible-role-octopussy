@@ -59,6 +59,7 @@ octopussy_cpan_packages:
   - Net::SCP 
   - Net::Telnet 
   - Net::XMPP
+  - Path::Tiny
   - Pod::Find
   - Pod::Usage
   - Proc::PID::File 
