@@ -91,7 +91,7 @@
 
 - name: "Create directories for 'lib'"
   file:
-    path: "{{ item.path | regex_replace('/tmp/octopussy', '') }}"
+    path: "{{ perl_install_dir.stdout }}/{{ item.path | regex_replace('/tmp/octopussy/lib/', '') }}"
     state: directory
     owner: "{{ octopussy_username }}"
     group: "{{ octopussy_groupname }}"
